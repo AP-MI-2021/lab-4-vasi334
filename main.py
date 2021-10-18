@@ -7,7 +7,7 @@ def citire_lista():
     lista = input('Scrieti o lista de numere separate prin virgula: ')
     lista_numere = lista.split(',')
     for x in lista_numere:
-        l = l.append(int(x))
+        l.append(int(x))
 
     return l
 
@@ -24,13 +24,13 @@ def concatenare_numere(l):
         if nr >= 0:
             numar_concatenat += str(nr)
 
-    return numar_concatenat
+    return int(numar_concatenat)
 
 
 def test_concatenare_numere():
     assert concatenare_numere([0, 8, 9, 10, 0]) == 89100
     assert concatenare_numere([8, 9, 10, 0, -7, 5]) == 891005
-    assert concatenare_numere([0, -4, 9, 10, 0]) == 910
+    assert concatenare_numere([0, -4, 9, 10, 0]) == 9100
 
 
 def suma_max_min(l):
@@ -53,10 +53,10 @@ def suma_cifrelor_unui_numar(nr):
     Returneaza suma cifrelor unui numar.
 
     """
-    sum = 0
+    suma = 0
     for digit in str(nr):
-        sum += int(digit)
-    return sum
+        suma += int(digit)
+    return suma
 
 
 def suma_cifrelor(l, n):
@@ -79,11 +79,62 @@ def test_suma_cifrelor():
     assert suma_cifrelor([25, 11, 10, 24, 39], 10) == [39]
 
 
+def verif_numar_patrat_perfect(num):
+    i = 1
+    while (i * i <= num):
+        if ((num % i == 0) and (num / i == i)):
+            return True
+        i = i + 1
+
+    return False
+
+
+def patrat_perfect(num):
+    i = 1
+    while (i * i <= num):
+        if ((num % i == 0) and (num / i == i)):
+            return i
+        i = i + 1
+
+
+def patrate_perfecte_mai_mici(nr):
+    lista = []
+    for i in range(1, nr):
+        if verif_numar_patrat_perfect(i):
+            lista.append(i)
+
+    return lista
+
+
+def lista_patrat_perfect(l):
+    """Returneaza lista obținuta din lista inițială în care numerele pătrat perfect sunt înlocuite cu radicalul
+    acestora. Altfel sunt inlocuite cu o lista cu divizorii sai.
+    """
+
+    noua_lista = []
+
+    for num in l:
+        if verif_numar_patrat_perfect(num):
+            noua_lista.append(patrat_perfect(num))
+        elif num > 0:
+            noua_lista.append(patrate_perfecte_mai_mici(num))
+        else:
+            noua_lista.append(num)
+
+    return noua_lista
+
+
+def test_lista_patrat_perfect():
+    assert lista_patrat_perfect([25, 13, 26, 9, -4, 0]) == [5, [1, 4, 9], [1, 4, 9, 16, 25], 3, -4, 0]
+    assert lista_patrat_perfect([25, 16, 26, 9, 2, 0]) == [5, 4, [1, 4, 9, 16, 25], 3, [1], 0]
+    assert lista_patrat_perfect([25, 13, 26, 36, -4, 9]) == [5, [1, 4, 9], [1, 4, 9, 16, 25], 6, -4, 3]
+
+
 def meniu():
     test_concatenare_numere()
     test_suma_max_min()
     test_suma_cifrelor()
-    #test_
+    test_lista_patrat_perfect()
 
     lista = []
 
@@ -107,14 +158,14 @@ def meniu():
         if alegere == '1':
             lista = citire_lista()
         elif alegere == '2':
-            concatenare_numere(lista)
+            print(concatenare_numere(lista))
         elif alegere == '3':
-            suma_max_min(lista)
+            print(suma_max_min(lista))
         elif alegere == '4':
             nr = int(input('Introduceti un numar: '))
-            suma_cifrelor(lista, nr)
+            print(suma_cifrelor(lista, nr))
         elif alegere == '5':
-            pass
+            print(lista_patrat_perfect(lista))
 
         alegere = input(user_choice)
 
